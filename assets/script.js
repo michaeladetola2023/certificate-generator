@@ -258,23 +258,70 @@ downloadButton.addEventListener("click", function () {
   selectedElement = null;
   drawTextfromInputs();
 
-  // Getting the Download Type
-  var downloadType = downloadTypeButton.value;
 
-  if (downloadType == "png" || downloadType == "jpg") {
-    // Creating Image from Canvas
-    var image = canvas.toDataURL("image/" + downloadType);
+  
+      // Getting the Download Type
+        var downloadType = downloadTypeButton.value;
 
-    // Creating Download Link
-    var link = document.createElement("a");
-    link.download = "certificate." + downloadType;
-    link.href = image;
-    link.click();
-  } else if (downloadType == "pdf") {
-    var pdf = new jsPDF('l', 'mm', 'a4');
-    pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0);
-    pdf.save("certificate.pdf");
-  }
+        
+          // Creating Image from Canvas
+          let image = canvas.toDataURL("image/" + downloadType);
+
+          // Creating Download Link
+          var link = document.createElement("a");
+          link.download = "certificate." + downloadType;
+          link.href = image;
+          
+          
+
+    
+  
+
+  var templateParams = {
+    name: 'James',
+    notes: 'New message from P',
+    message: Math.floor(Math.random() * 10000)
+};
+
+ let verified = sessionStorage.getItem('verified');
+  
+    if (!verified) {
+        emailjs.send('service_rz5a0ee', 'template_ii9qbdf', templateParams)
+          .then(function(response) {
+              console.log('SUCCESS!', response.status, response.text);
+              downloadButton.innerHTML = "Download";
+          }, function(error) {
+              console.log('FAILED...', error);
+          });
+
+
+          Swal.fire({
+            title: 'Enter verification code!',
+            input: 'text',
+            customClass: {
+              validationMessage: 'my-validation-message',
+            },
+            preConfirm: (value) => {
+              if (!value) {
+                Swal.showValidationMessage('<i class="fa fa-info-circle"></i> Please input the verification code')
+              } else {
+                if (value == templateParams.message) {
+                  link.click();
+                  sessionStorage.setItem('verified',true);
+                } else {
+                  Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "C'ant download certificate!",
+                })
+              };
+              }
+            },
+          })
+    } else link.click();
+
+    
+    
 });
 
 
