@@ -83,7 +83,7 @@ main > div:nth-child(2) {
   font-weight: 500;
   padding: 5px 10px;
   border-radius: 5px;
-  background: rgb(25, 100, 240);
+  background: teal;
   border: transparent;
   color: #fff;
   cursor: pointer;
@@ -295,6 +295,18 @@ input[type="file"]{
   }
 
 }
+
+
+.my-validation-message::before {
+  display: none;
+}
+
+.my-validation-message i {
+  margin: 0 0.4em;
+  color: #f27474;
+  font-size: 1.4em;
+}
+
 
 
 
