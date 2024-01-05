@@ -257,6 +257,7 @@ function addText(
 downloadButton.addEventListener("click", function () {
   selectedElement = null;
   drawTextfromInputs();
+  
 
 
   
@@ -286,18 +287,18 @@ downloadButton.addEventListener("click", function () {
  let verified = sessionStorage.getItem('verified');
   
     if (!verified) {
-        emailjs.send('service_rz5a0ee', 'template_ii9qbdf', templateParams)
-          .then(function(response) {
-              console.log('SUCCESS!', response.status, response.text);
-              downloadButton.innerHTML = "Download";
-          }, function(error) {
-              console.log('FAILED...', error);
-          });
+        // emailjs.send('service_rz5a0ee', 'template_ii9qbdf', templateParams)
+        //   .then(function(response) {
+        //       console.log('SUCCESS!', response.status, response.text);
+        //       downloadButton.innerHTML = "Download";
+        //   }, function(error) {
+        //       console.log('FAILED...', error);
+        //   });
 
 
           Swal.fire({
-            title: 'Enter verification code!',
-            input: 'text',
+            title: 'Enter Password!',
+            input: 'password',
             customClass: {
               validationMessage: 'my-validation-message',
             },
@@ -305,7 +306,8 @@ downloadButton.addEventListener("click", function () {
               if (!value) {
                 Swal.showValidationMessage('<i class="fa fa-info-circle"></i> Please input the verification code')
               } else {
-                if (value == templateParams.message) {
+                const pss = CryptoJS.SHA256(value).toString(CryptoJS.enc.Hex);
+                if (pss == '3ee893791a848108e379559045694c418207978eb610e56b05af08a91926acb7') {
                   link.click();
                   sessionStorage.setItem('verified',true);
                 } else {
